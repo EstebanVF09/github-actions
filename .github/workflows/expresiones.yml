@@ -1,0 +1,41 @@
+name: Expresiones
+run-name: Estoy aprendiendo a usar Expresiones!
+on:
+  workflow_dispatch:
+    inputs:
+      edad:
+        description: 'Ingresa tu Edad: '
+        required: true
+        type: number
+      nombre: 
+        description: 'Tu nombre es: '
+        required: true
+        type: string
+      celular:
+        description: 'Ingresa tu numero de celular: '
+        required: false
+        type: number
+        default: 00000000
+jobs:
+  mayor:
+    if: ${{ inputs.edad >= 18 }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Correr script mayor
+        run: echo ${{ inputs.nombre }} es mayor de edad
+  menor:
+    if: ${{ inputs.edad < 18 }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Correr script menor
+        run: echo ${{ inputs.nombre }} es menor de edad
+  guardar_informacion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Almacenar informacion
+        run: echo "USER=${{ toJson(inputs) }}" >> $GITHUB_ENV
+  enviar_informacion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar informacion desde python
+        run: python hola_mundo.py
