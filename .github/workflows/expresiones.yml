@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Almacenar informacion
-        run: echo "USER=${{ toJson(inputs) }}" >> $GITHUB_ENV
       - name: Enviar informacion desde python
+        env:
+          USER: ${{ toJSON(inputs) }}
         run: python hola_mundo.py
