@@ -14,8 +14,8 @@ on:
       celular:
         description: 'Ingresa tu numero de celular: '
         required: false
-        type: number
-        default: 00000000
+        type: string
+        default: '300'
 jobs:
   mayor:
     if: ${{ inputs.edad >= 18 }}
@@ -32,10 +32,9 @@ jobs:
   guardar_informacion:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Almacenar informacion
         run: echo "USER=${{ toJson(inputs) }}" >> $GITHUB_ENV
-  enviar_informacion:
-    runs-on: ubuntu-latest
-    steps:
       - name: Enviar informacion desde python
         run: python hola_mundo.py
