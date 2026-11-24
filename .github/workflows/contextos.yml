@@ -1,0 +1,64 @@
+name: Contexto
+run-name: Estoy aprendiendo a usar Contextos!
+on: push
+env:
+  APP_NAME: MiAplicacion
+  ENVIRONMENT: Development
+jobs:
+  check-main:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Desplegando en la rama $GITHUB_REF"
+  explorar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mostrar contexto github
+        env:
+          DATA: ${{ toJSON(github) }}
+        run: echo "$DATA" | jq 'del(.token, .event)'
+
+      - name: Mostrar contexto env
+        env:
+          DATA: ${{ toJSON(env) }}
+        run: echo "$DATA"
+
+      - name: Mostrar contexto vars
+        env:
+          DATA: ${{ toJSON(vars) }}
+        run: echo "$DATA"
+
+      - name: Mostrar contexto runner
+        env:
+          DATA: ${{ toJSON(runner) }}
+        run: echo "$DATA"
+
+      - name: Mostrar contexto job
+        env:
+          DATA: ${{ toJSON(job) }}
+        run: echo "$DATA"
+
+      - name: Step de ejemplo
+        id: ejemplo
+        run: echo "mensaje=Hola desde GitHub Actions" >> "$GITHUB_OUTPUT"
+
+      - name: Mostrar contexto steps
+        env:
+          DATA: ${{ toJSON(steps) }}
+        run: echo "$DATA"
+
+      - name: Mostrar contexto inputs
+        env:
+          DATA: ${{ toJSON(inputs) }}
+        run: echo "$DATA"
+
+      - name: Verificar disponibilidad de un secret
+        env:
+          MI_SECRET: ${{ secrets.MI_SECRET }}
+        run: |
+          if [ -n "$MI_SECRET" ]; then
+            echo "MI_SECRET está configurado"
+          else
+            echo "MI_SECRET no está disponible"
+          fi
